@@ -1,5 +1,5 @@
 node {
-    def PROJECT_NAME = "project_name"
+    def PROJECT_NAME = "Jenkins_Files"
 
     // Clean workspace before doing anything
     deleteDir()
@@ -20,7 +20,7 @@ node {
             try {
                 deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
-				echo 'Deploy settings is ${deploySettings}'
+				echo 'Deploy settings is '${deploySettings}
             } catch(err) {
                 println(err.getMessage());
                 throw err
