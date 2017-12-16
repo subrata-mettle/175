@@ -65,7 +65,12 @@ node {
             archive 'build/libs/**/*.jar'
             junit 'build/reports/**/*.xml'
         }
-    }
+		failure {
+				mail to: 'team@example.com',
+					 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
+					 body: "Something is wrong with ${env.BUILD_URL}"
+			}
+		}
     } catch (err) {
         currentBuild.result = 'FAILED'
         notifyFailed()
