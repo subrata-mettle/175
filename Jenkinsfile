@@ -20,6 +20,7 @@ node {
             try {
                 deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
+				echo 'Deploy settings is ${deploySettings}'
             } catch(err) {
                 println(err.getMessage());
                 throw err
@@ -52,6 +53,12 @@ node {
                 }
             }
         }
+		post {
+        always {
+            archive 'build/libs/**/*.jar'
+            junit 'build/reports/**/*.xml'
+        }
+    }
     } catch (err) {
         currentBuild.result = 'FAILED'
         notifyFailed()
