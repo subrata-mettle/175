@@ -1,5 +1,9 @@
 node {
     def PROJECT_NAME = "Jenkins_File"
+	// Get the maven tool.
+   // ** NOTE: This 'M3' maven tool must be configured
+   // **       in the global configuration.           
+   def mvnHome = tool 'M3'
 
     // Clean workspace before doing anything
     deleteDir()
@@ -15,6 +19,8 @@ node {
     try {
         stage ('Clone') {
             checkout scm
+			
+			git url: 'https://github.com/TTFHW/jenkins_pipeline_java_maven.git'
         }
         stage ('preparations') {
             try {
@@ -27,7 +33,8 @@ node {
             }
         }
         stage('Build') {
-            sh "mg2-builder install -Dproject.name=${PROJECT_NAME} -Dproject.environment=local -Dinstall.type=clean -Ddatabase.admin.username=${env.DATABASE_USER} -Ddatabase.admin.password=${env.DATABASE_PASS} -Denvironment.server.type=none"
+            sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
+			step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
         }
         stage ('Tests') {                
             parallel 'static': {
