@@ -3,7 +3,7 @@ node {
 	// Get the maven tool.
    // ** NOTE: This 'M3' maven tool must be configured
    // **       in the global configuration.           
-   def mvnHome = tool 'M3'
+   //def mvnHome = tool 'M3'
 
     // Clean workspace before doing anything
     deleteDir()
@@ -26,7 +26,7 @@ node {
             try {
                 def deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
-				echo 'Deploy settings is ${deploySettings}'
+				echo 'Deploy settings is ${deploySettings} ${MAVEN_TOOL}'
             } catch(err) {
                 println(err.getMessage());
                 throw err
