@@ -24,6 +24,7 @@ node {
         }
         stage ('preparations') {
             try {
+			    sh "git pull https://github.com/subrata-mettle/175.git"
                 def deploySettings = getDeploySettings()
                 sh './preparations.sh'
             } catch(err) {
