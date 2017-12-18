@@ -26,7 +26,7 @@ node {
             try {
                 def deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
-				echo 'Deploy settings is ${deploySettings} ${mvnHome}'
+				echo "Deploy settings is ${deploySettings} ${mvnHome}"
             } catch(err) {
                 println(err.getMessage());
                 throw err
