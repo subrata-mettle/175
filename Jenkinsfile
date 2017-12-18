@@ -25,7 +25,7 @@ node {
         stage ('preparations') {
             try {
                 def deploySettings = getDeploySettings()
-                sh "./preparations.sh"
+                sh './preparations.sh'
             } catch(err) {
                 println(err.getMessage());
                 throw err
