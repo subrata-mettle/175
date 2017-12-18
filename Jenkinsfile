@@ -26,7 +26,7 @@ node {
             try {
                 def deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
-				echo "Branch Details Type ${branchDetails.type}"
+				echo "Branch Details Type ${branchDetails.type} and Version ${branchDetails.version}"
 				echo "Deploy settings is ${deploySettings} ${mvnHome}"
             } catch(err) {
                 println(err.getMessage());
