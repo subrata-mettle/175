@@ -17,6 +17,10 @@ node {
     properties(propertiesData)
 
     try {
+	    stage ('Checkout')
+		{
+   		git url: 'https://github.com/subrata-mettle/175.git'
+		}
         stage ('Clone') {
             checkout scm
 			
@@ -24,7 +28,7 @@ node {
         }
         stage ('preparations') {
             try {
-			    sh "git pull https://github.com/subrata-mettle/175.git"
+			    
                 def deploySettings = getDeploySettings()
                 sh './preparations.sh'
             } catch(err) {
