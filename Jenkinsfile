@@ -26,7 +26,7 @@ node {
             try {
                 def deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
-				echo 'Deploy settings is ${deploySettings} ${MAVEN_TOOL}'
+				echo 'Deploy settings is ${deploySettings} ${mvnHome}'
             } catch(err) {
                 println(err.getMessage());
                 throw err
@@ -36,6 +36,10 @@ node {
             sh "${mvnHome}/bin/mvn -Dmaven.test.failure.ignore clean package"
 			step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
         }
+		stage('Results') {
+		  junit '**/target/surefire-reports/TEST-*.xml'
+		  archive 'target/*.jar'
+	   }
         stage ('Tests') {                
             parallel 'static': {
                 sh "bin/grumphp run --testsuite=magento2testsuite"
@@ -60,17 +64,7 @@ node {
                 }
             }
         }
-		post {
-        always {
-            archive '**/build/libs/**/*.jar'
-            junit '**/build/reports/**/*.xml'
-        }
-		failure {
-				mail to: 'team@example.com',
-					 subject: "Failed Pipeline: ${currentBuild.fullDisplayName}",
-					 body: "Something is wrong with ${env.BUILD_URL}"
-			}
-		}
+		
     } catch (err) {
         currentBuild.result = 'FAILED'
         notifyFailed()
@@ -99,7 +93,7 @@ def getBranchDetails() {
 
 def getDeploySettings() {
     def deploySettings = [:]
-    if (BRANCH_NAME == 'develop') { 
+    if (BRANCH_NAME == 'master') { 
         deploySettings['ssh'] = "user@domain-igr.com"
     } else if (params.deployServer && params.deployServer != 'none') {
         branchDetails = getBranchDetails()
