@@ -62,8 +62,8 @@ node {
         }
 		post {
         always {
-            archive 'build/libs/**/*.jar'
-            junit 'build/reports/**/*.xml'
+            archive '**/build/libs/**/*.jar'
+            junit '**/build/reports/**/*.xml'
         }
 		failure {
 				mail to: 'team@example.com',
@@ -118,7 +118,7 @@ def notifyDeployedVersion(String version) {
   emailext (
       subject: "Deployed: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: "DEPLOYED VERSION '${version}': Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at '${env.BUILD_URL}' [${env.BUILD_NUMBER}]",
-      to: "some-email@some-domain.com"
+      to: "some-success-email@some-domain.com"
     )
 }
 
@@ -126,6 +126,6 @@ def notifyFailed() {
   emailext (
       subject: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
       body: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]': Check console output at '${env.BUILD_URL}' [${env.BUILD_NUMBER}]",
-      to: "some-email@some-domain.com"
+      to: "some-fail-email@some-domain.com"
     )
 }
