@@ -26,6 +26,7 @@ node {
             try {
                 def deploySettings = getDeploySettings()
                 echo 'Deploy settings were set'
+				echo "Branch Details Type ${branchDetails.type}"
 				echo "Deploy settings is ${deploySettings} ${mvnHome}"
             } catch(err) {
                 println(err.getMessage());
@@ -94,15 +95,15 @@ def getBranchDetails() {
 def getDeploySettings() {
     def deploySettings = [:]
     if (BRANCH_NAME == 'master') { 
-        deploySettings['ssh'] = "user@domain-igr.com"
+        deploySettings['ssh'] = "masteruser@domain-igr.com"
     } else if (params.deployServer && params.deployServer != 'none') {
         branchDetails = getBranchDetails()
         deploySettings['type'] = branchDetails.type
         deploySettings['version'] = branchDetails.version
         if (params.deployServer == 'PRD') {
-            deploySettings['ssh'] = "user@domain-prd.com"
+            deploySettings['ssh'] = "prod_user@domain-prd.com"
         } else if (params.deployServer == 'IGR') {
-            deploySettings['ssh'] = "user@domain-igr.com"
+            deploySettings['ssh'] = "igr_user@domain-igr.com"
         }
     }
     return deploySettings
